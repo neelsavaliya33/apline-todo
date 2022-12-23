@@ -22,15 +22,15 @@
 				autofocus>
 		</header>
 		<section class="main" x-show="todos.length">
-			<input id="toggle-all" class="toggle-all" type="checkbox" @click="markAllAsCompleted">
+			<input id="toggle-all" class="toggle-all" x-model="isAllCompleted" type="checkbox" @click="toggleAll">
 			<label for="toggle-all">Mark all as complete</label>
 			<ul class="todo-list">
 				<template x-for="todo of filteredTodos">
 					<li :class="{'completed':todo.completed,'editing' : editable == todo.id}"
 						@dblclick="editTodo(todo)">
 						<div class="view">
-							<input class="toggle" x-model="todo.completed" @click="todo.completed = ! todo.completed"
-								type="checkbox" checked>
+							<input class="toggle" x-model="todo.completed" @click="toggleTodo(todo)" type="checkbox"
+								checked>
 							<label x-html="todo.body"></label>
 							<button class="destroy" @click="deleteTodo(todo)"></button>
 						</div>
@@ -42,7 +42,8 @@
 			</ul>
 		</section>
 		<footer class="footer" x-show="todos.length">
-			<span class="todo-count"><strong x-html="active.length"></strong> item left</span>
+			<span class="todo-count"><strong x-html="active.length"></strong> <span
+					x-html="active.length == 1 ? 'item':'items'"></span> left</span>
 			<ul class="filters">
 				<li>
 					<a :class="{'selected' : filter === 'all'}" href="#" @click="filter ='all'">All</a>
